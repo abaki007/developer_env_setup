@@ -76,23 +76,23 @@ fi
 echo "========================================================================"
 echo "================= Installing Python & Python Libraries ================="
 
-if ( pyenv versions | grep "3.8.7" ); then
+if ( pyenv versions | grep "3.9.6" ); then
     echo -e "python 3.7.8 already installed\n"
     python_installed="already_installed"
 else
-    echo "installing python 3.8.7"
+    echo "installing python 3.9.6"
     if(uname -a | grep "Darwin Kernel Version 20"); then
         export LDFLAGS="-L/usr/local/opt/zlib/lib"
         export CPPFLAGS="-I/usr/local/opt/zlib/include"
     fi
     
-    pyenv install -v 3.8.7
+    pyenv install -v 3.9.6
     python_installed="installed"
     echo " "
 fi
-echo "setting global python version to 3.8.7"
+echo "setting global python version to 3.9.6"
 eval "$(pyenv init -)"
-pyenv global 3.8.7
+pyenv global 3.9.6
 python --version
 echo " "
 
