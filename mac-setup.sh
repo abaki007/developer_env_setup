@@ -55,7 +55,7 @@ if ( which zsh ); then
 else
     echo "installing zsh"
     brew install zsh
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
     chmod 700 /usr/local/share/zsh
     chmod 700 /usr/local/share/zsh/site-functions
     zsh_installed="installed"
@@ -139,7 +139,7 @@ else
     echo "adding pyenv init to zshrc"
     echo -e "\n#pyenv init so pyenv manages python versions" >> ~/.zshrc
     echo 'eval "$(pyenv init -)"' >> ~/.zshrc
-    echo "PATH=$PATH:/Users/bbpj/Library/Python/3.8/bin" >> ~/.zshrc
+#     echo "PATH=$PATH:/Users/bbpj/Library/Python/3.8/bin" >> ~/.zshrc
 fi
 
 # add aswume alias & auto-complete to zsh
