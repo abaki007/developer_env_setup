@@ -7,27 +7,32 @@ unset AWS_SESSION_TOKEN
 unset AWS_DEFAULT_REGION
 
 
+###################################################################################################
+############################### Get and verify AWS SSO Profile ####################################
 profile=$1
 
 profile_lower=$(echo "$profile" | tr '[:upper:]' '[:lower:]')
 
 if [[ "$profile_lower" == *"help"* ]] || [[ -z "$profile_lower" ]]; then
     echo "This is for use with AWS CLI version 2"
-    echo "Please ensure you have logged in via: aws sso login --profile <profile_name>"
+    echo "Please ensure you have set up your aws cli for sso and have at least 1 profile defined"
     echo "Then provide this profile_name here as an argument: source ./awsume_sso <profile_name>"
+    echo "https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sso.html"
     return 20
 fi
 
-aws sts get-caller-identity --profile ${profile} 1> /dev/null
+aws sso login --profile ${profile}
 if [ $? -eq 0 ]; then
-    echo "Profile $profile found"
+    echo "Profile $profile found and successfully logged in via SSO"
 else
-    echo "Please run aws sso login --profile ${profile}"
+    echo "Please verify your profile ${profile} exists in the ~/.aws/config file"
     echo "For more info ./awsume_sso help"
     return 21
 fi
 
 
+###################################################################################################
+################################ Set env credentials from SSO #####################################
 aws_role=$(aws configure get sso_role_name --profile ${profile})
 aws_account=$(aws configure get sso_account_id --profile ${profile})
 aws_region=$(aws configure get region --profile ${profile})
@@ -57,5 +62,7 @@ export AWS_ACCESS_KEY_ID=${access_key}
 export AWS_SECRET_ACCESS_KEY=${secret_key}
 export AWS_SESSION_TOKEN=${session_token}
 export AWS_DEFAULT_REGION=${aws_region}
+export AWS_DEFAULT_ACCOUNT=${aws_account}
 
 echo ${AWS_ACCESS_KEY_ID}
+
